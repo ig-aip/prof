@@ -41,6 +41,16 @@ public class Workers {
 
     public Workers() {}
 
+    public Workers(String firstName, String secondName, String thirdName, String email, String phone, String passwordHash, RoleType role) {
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.thirdName = thirdName;
+        this.email = email;
+        this.phone = phone;
+        this.passwordHash = passwordHash;
+        this.role = role;
+    }
+
 
     @PrePersist
     protected void onCreate(){

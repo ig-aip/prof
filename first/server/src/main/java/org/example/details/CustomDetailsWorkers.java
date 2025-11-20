@@ -11,6 +11,9 @@ import java.util.List;
 public class CustomDetailsWorkers implements UserDetails {
     private Workers worker;
 
+    public CustomDetailsWorkers(Workers worker){
+        this.worker = worker;
+    }
     public void setWorker(Workers worker) {
         this.worker = worker;
     }
@@ -29,6 +32,11 @@ public class CustomDetailsWorkers implements UserDetails {
     public String getUsername(){
         return worker.getEmail();
     }
+
+    public String getEmail(){
+        return worker.getEmail();
+    }
+
 
 
     public Workers getWorker(){
