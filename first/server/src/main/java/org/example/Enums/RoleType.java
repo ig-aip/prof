@@ -1,9 +1,9 @@
 package org.example.Enums;
 
 public enum RoleType {
-    ROLE_FRANCHAISER("Франчайзер"),
-    ROLE_MECHANIC("Механик"),
-    ROLE_REPLENISHING_BOY("Пополнитель");
+    ROLE_FRANCHAISER("ROLE_FRANCHAISER"),
+    ROLE_MECHANIC("ROLE_MECHANIC"),
+    ROLE_REPLENISHING_BOY("ROLE_REPLENISHING_BOY");
 
 
     public String getString(){

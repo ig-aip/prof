@@ -1,13 +1,17 @@
 package org.example.details;
 
+import jdk.jfr.SettingDefinition;
+import org.example.Enums.RoleType;
 import org.example.db.Workers;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
 
+@Component
 public class CustomDetailsWorkers implements UserDetails {
     private Workers worker;
 
@@ -37,7 +41,8 @@ public class CustomDetailsWorkers implements UserDetails {
         return worker.getEmail();
     }
 
-
+    @SettingDefinition
+    public void setRole(RoleType role){ worker.setRole(role);}
 
     public Workers getWorker(){
         return worker;

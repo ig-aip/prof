@@ -3,10 +3,12 @@ package org.example.db;
 
 import jakarta.persistence.*;
 import org.example.Enums.RoleType;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-
+@Component
 @Entity
+@Table (name = "workers")
 public class Workers {
     @Id
     @Column(name = "id")
@@ -50,7 +52,15 @@ public class Workers {
         this.passwordHash = passwordHash;
         this.role = role;
     }
-
+    public Workers(String firstName, String secondName, String thirdName, String email, String phone, String passwordHash, String role) {
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.thirdName = thirdName;
+        this.email = email;
+        this.phone = phone;
+        this.passwordHash = passwordHash;
+        this.role = RoleType.valueOf(role);
+    }
 
     @PrePersist
     protected void onCreate(){

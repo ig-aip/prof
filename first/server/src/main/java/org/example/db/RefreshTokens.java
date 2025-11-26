@@ -16,7 +16,8 @@ public class RefreshTokens {
     @Column(name = "token", nullable = false, unique = true)
     private String token;
 
-    @Column(name = "worker")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "worker_id", nullable = false)
     private Workers worker;
 
     @Column(name = "endDate")

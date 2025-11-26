@@ -25,7 +25,7 @@ public class SignUpRequest {
     @NotBlank(message = "Адрес электронной почты не может быть пустым")
     private String email;
 
-    @Size(min = 12, max = 13, message = "Неверно набранный номер")
+    @Size(min = 11, max = 12, message = "Неверно набранный номер")
     @NotBlank(message = "Телефон не может быть пустым")
     private String phone;
 
@@ -33,9 +33,9 @@ public class SignUpRequest {
     @Size(max = 255, message = "пароль должен быть меньше 255 символов")
     private String password;
 
-    private RoleType role = RoleType.ROLE_REPLENISHING_BOY;
+    private String role = RoleType.ROLE_REPLENISHING_BOY.getString();
 
-    public SignUpRequest(String firstName, String secondName, String thirdName, String email, String phone, String password, RoleType role) {
+    public SignUpRequest(String firstName, String secondName, String thirdName, String email, String phone, String password, String role) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.thirdName = thirdName;
@@ -85,11 +85,11 @@ public class SignUpRequest {
         this.password = password;
     }
 
-    public RoleType getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(RoleType role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
