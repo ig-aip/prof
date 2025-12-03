@@ -1,14 +1,12 @@
-package org.example.authentication;
+package data;
 
-public class AuthenticationResponse {
+public class JwtPair {
     private String accessToken;
     private String refreshToken;
-    private String tokenType;
 
-    public AuthenticationResponse(String accessToken, String refreshToken, String tokenType) {
+    public JwtPair(String accessToken, String refreshToken, String tokenType) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
-        this.tokenType = tokenType;
     }
 
     public String getAccessToken() {
@@ -27,12 +25,4 @@ public class AuthenticationResponse {
         this.refreshToken = refreshToken;
     }
 
-    public String getTokenType() {
-        return tokenType;
-    }
-
-    public void setTokenType(String tokenType) {
-        this.tokenType = tokenType;
-    }
 }
-

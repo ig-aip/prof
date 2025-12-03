@@ -1,11 +1,11 @@
 package org.example.authentication;
 
-public class AuthenticationResponse {
+public class MyAuthenticationResponse {
     private String accessToken;
     private String refreshToken;
     private String tokenType;
 
-    public AuthenticationResponse(String accessToken, String refreshToken, String tokenType) {
+    public MyAuthenticationResponse(String accessToken, String refreshToken, String tokenType) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.tokenType = tokenType;
@@ -35,4 +35,3 @@ public class AuthenticationResponse {
         this.tokenType = tokenType;
     }
 }
-

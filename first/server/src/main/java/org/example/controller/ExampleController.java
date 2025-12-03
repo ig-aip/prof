@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class ExampleController {
     private CustomDetailsWorkerService userService;
 
+    public ExampleController(CustomDetailsWorkerService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
     @Operation(summary = "Доступ только для авторезировынных")
@@ -26,6 +29,12 @@ public class ExampleController {
     @PreAuthorize("hasRole('ROLE_FRANCHAISER')")
     public String exampleAdmit(){
         return "hello FRANCHAISER |_|";
+    }
+
+    @GetMapping("/role")
+    @Operation(summary = "Получить роль")
+    public String role(){
+        return userService.getRole();
     }
 
 

@@ -63,8 +63,13 @@ public class CustomDetailsWorkerService implements UserDetailsService {
 
     @Deprecated
     public void getAdmin(){
-        var user = getCurrentUser();
-        user.getWorker().setRole(RoleType.ROLE_FRANCHAISER);
+        var worker = getCurrentUser();
+        worker.getWorker().setRole(RoleType.ROLE_FRANCHAISER);
+    }
+    @Deprecated
+    public String getRole(){
+        var worker = getCurrentUser();
+        return worker.getWorker().getRole().getString();
     }
 
 
