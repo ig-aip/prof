@@ -7,6 +7,8 @@ module org.example.demo {
 
     opens org.example.demo to javafx.graphics , javafx.fxml;
     opens app.controller to javafx.fxml;
+    opens data to com.fasterxml.jackson.databind;
+    opens enams to com.fasterxml.jackson.databind;
 
     exports org.example.demo;
 }

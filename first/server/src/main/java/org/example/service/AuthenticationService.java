@@ -59,11 +59,12 @@ public class AuthenticationService {
                 request.getPassword()
         ));
 
-        UserDetails worker = workerService.loadUserByUsername(request.getEmail());
+        Workers worker = workerService.loadUserByUsername(request.getEmail()).getWorker();
+
 
         String accessToken = jwtService.generateAccessToken(workerService.findWorkerByEmail(request.getEmail()));
         String refreshToken = refreshTokensService.createRefrshToken(workerService.findWorkerByEmail(request.getEmail()), 1);
-        AuthenticationResponse resp = new AuthenticationResponse(accessToken, refreshToken, "Bearer");
+        AuthenticationResponse resp = new AuthenticationResponse(accessToken, refreshToken, "Bearer", worker);
 
         return resp;
     }

@@ -3,11 +3,18 @@ package app.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import org.example.demo.ApiService;
+import org.example.demo.MainController;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -30,7 +37,7 @@ public class LogInController {
     }
 
     @FXML
-    private void onSignIn(){
+    private void onSignIn(ActionEvent event){
         String email = emailField.getText().trim();
         String password = passwordField.getText();
         if(email.isEmpty() || password.isEmpty()){
@@ -52,9 +59,19 @@ public class LogInController {
                     setStatus("Error after Chek signIn: " + er.getMessage(), true);
                 }else{
                     try {
-                        String accessToke = result.get("accessToken");
-                        String refreshToken = result.toString();
-                        setStatus("Server response: " + refreshToken, false);
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/main.fxml"));
+                        Parent root = loader.load();
+
+                        app.controller.MainController mainController = loader.getController();
+                        mainController.setWorker();
+
+                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        stage.setScene(new Scene(root));
+                        stage.show();
+
+                        String accessToke = result.getJwtPair().getAccessToken();
+                        String refreshToken = result.getJwtPair().getRefreshToken();
+                        setStatus("Server response: " + refreshToken + result.getWorker().getFirstName(), false);
                     } catch (Exception e) {
                         System.out.printf("Server response error: " + e.getMessage());
                     }

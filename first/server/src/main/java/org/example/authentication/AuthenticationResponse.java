@@ -1,14 +1,33 @@
 package org.example.authentication;
 
+import org.example.db.Workers;
+
 public class AuthenticationResponse {
     private String accessToken;
     private String refreshToken;
     private String tokenType;
 
+    private Workers worker;
+
     public AuthenticationResponse(String accessToken, String refreshToken, String tokenType) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.tokenType = tokenType;
+    }
+
+    public AuthenticationResponse(String accessToken, String refreshToken, String tokenType, Workers worker) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+        this.tokenType = tokenType;
+        this.worker = worker;
+    }
+
+    public Workers getWorker() {
+        return worker;
+    }
+
+    public void setWorker(Workers worker) {
+        this.worker = worker;
     }
 
     public String getAccessToken() {

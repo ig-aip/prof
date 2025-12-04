@@ -3,7 +3,9 @@ package org.example.demo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import data.AuthenticationResponse;
 import data.JwtPair;
+import data.Workers;
 
 import java.io.IOException;
 import java.net.URI;
@@ -20,6 +22,7 @@ public class ApiService {
     private ObjectMapper objectMapper = new ObjectMapper();
     private String url = "http://localhost:8080";
     private Preferences preferences = Preferences.userRoot().node("org.example.auth");
+    Workers currentWorker;
 
     ApiService() {
         client = HttpClient.newBuilder().
@@ -31,7 +34,7 @@ public class ApiService {
         return SINGLTON;
     }
 
-    public Map<String, String> signIn(String email, String password) throws Exception {
+    public AuthenticationResponse signIn(String email, String password) throws Exception {
         String json = objectMapper.writeValueAsString(Map.of("email", email, "password", password));
         HttpRequest req = HttpRequest.newBuilder()
                 .uri(URI.create(url + "/auth/sign-in"))
@@ -44,9 +47,9 @@ public class ApiService {
             throw new Exception("Sign in Failed: "+ resp.statusCode() + ": "+ resp.body());
         }
 
-        Map<String, String> tokens = objectMapper.readValue(resp.body(), new TypeReference<Map<String, String>>() {});
-        saveTokens(tokens.get("accessToken"), tokens.get("refreshToken"));
-
+        AuthenticationResponse tokens = objectMapper.readValue(resp.body(), AuthenticationResponse.class);
+        saveTokens(tokens.getJwtPair().getAccessToken(), tokens.getJwtPair().getRefreshToken());
+        currentWorker = tokens.getWorker();
         return tokens;
     }
 
@@ -150,6 +153,11 @@ public class ApiService {
         return false;
 
 
+    }
+
+
+    public Workers getCurrentWorker() {
+        return currentWorker;
     }
 
 }
