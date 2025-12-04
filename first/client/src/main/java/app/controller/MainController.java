@@ -1,13 +1,22 @@
 package app.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.prefs.BackingStoreException;
 
 import data.Workers;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.stage.Stage;
 import org.example.demo.ApiService;
 
 public class MainController {
@@ -43,8 +52,26 @@ public class MainController {
     }
 
     @FXML
-    void openProfile(ActionEvent event) {
+    public void shutdown(ActionEvent event) throws IOException, BackingStoreException {
+        try {
+            apiService.clear();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/logIn.fxml"));
+            Parent root = loader.load();
 
+            Stage stage = (Stage) (menuDropDOwn.getItems().get(2).getParentPopup().getOwnerNode().getScene().getWindow());
+            stage.setScene(new Scene(root));
+            stage.show();
+        }catch (Exception exception){
+            System.out.println(exception.getMessage());
+        }
+
+
+
+    }
+
+    @FXML
+    void openProfile(ActionEvent event) {
+        System.out.println("my profile ");
     }
 
     @FXML

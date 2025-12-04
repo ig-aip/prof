@@ -14,6 +14,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.Map;
+import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 public class ApiService {
@@ -42,7 +43,7 @@ public class ApiService {
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
 
-        HttpResponse<String> resp = client.send(req, HttpResponse.BodyHandlers.ofString() );
+        HttpResponse<String> resp = authenticationRequest(req);
         if(resp.statusCode() != 200){
             throw new Exception("Sign in Failed: "+ resp.statusCode() + ": "+ resp.body());
         }
@@ -60,7 +61,7 @@ public class ApiService {
                 .GET()
                 .build();
 
-        HttpResponse<String> resp = client.send(req, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> resp = authenticationRequest(req);
         if(resp.statusCode() != 200) {
             throw new Exception("Get role failed: "+ resp.statusCode() + ": "+ resp.body());
         }
@@ -158,6 +159,11 @@ public class ApiService {
 
     public Workers getCurrentWorker() {
         return currentWorker;
+    }
+
+    public void clear() throws BackingStoreException {
+        this.currentWorker = null;
+        preferences.clear();
     }
 
 }
