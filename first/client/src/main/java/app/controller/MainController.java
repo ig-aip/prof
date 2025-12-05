@@ -14,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
@@ -45,10 +46,16 @@ public class MainController {
     private Button monitorTaId;
 
 
+    @FXML
+    private Label roleLabel;
+
+
+
     public void setWorker(){
         Workers worker = apiService.getCurrentWorker();
         StringBuilder sBuilder = new StringBuilder();
         menuDropDOwn.setText(worker.getSecondName() + " " + String.valueOf(worker.getFirstName().charAt(0)).toUpperCase() + "." + String.valueOf(worker.getThirdName().charAt(0)).toUpperCase() + "." );
+        roleLabel.setText(worker.getRole().getString());
     }
 
     @FXML

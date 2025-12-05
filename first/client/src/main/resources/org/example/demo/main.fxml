@@ -37,13 +37,21 @@
     <top>
         <HBox alignment="CENTER_RIGHT" prefHeight="62.0" prefWidth="259.0" BorderPane.alignment="CENTER_RIGHT">
             <children>
-                <Label prefHeight="18.0" prefWidth="127.0" text="Имя пользователя" />
-            <MenuButton fx:id="menuDropDOwn" mnemonicParsing="false" text="Имя пользователя">
+            <MenuButton fx:id="menuDropDOwn" alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" popupSide="TOP" prefHeight="50.0" prefWidth="122.0" text="Имя пользователя">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#openProfile" text="Мой профиль" />
                 <MenuItem mnemonicParsing="false" text="Мои Сессии" />
                   <MenuItem mnemonicParsing="false" onAction="#shutdown" text="Выход" />
               </items>
+               <graphic>
+                  <Label fx:id="roleLabel" alignment="CENTER" contentDisplay="BOTTOM" prefHeight="17.0" prefWidth="102.0" text="Label" />
+               </graphic>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets right="15.0" />
+               </HBox.margin>
             </MenuButton>
             </children>
         </HBox>

@@ -1,9 +1,9 @@
 package enams;
 
 public enum RoleType {
-    ROLE_FRANCHAISER("ROLE_FRANCHAISER"),
-    ROLE_MECHANIC("ROLE_MECHANIC"),
-    ROLE_REPLENISHING_BOY("ROLE_REPLENISHING_BOY");
+    ROLE_FRANCHAISER("Франчайзер"),
+    ROLE_MECHANIC("Мезаник"),
+    ROLE_REPLENISHING_BOY("мальчик для пополнения");
 
 
     public String getString(){
