@@ -9,6 +9,17 @@ public class AuthenticationResponse {
 
     private Workers worker;
 
+    private float networkEffectPercent;
+
+    public AuthenticationResponse(String accessToken, String refreshToken, String tokenType, Workers worker, float networkEffectPercent) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+        this.tokenType = tokenType;
+        this.worker = worker;
+        this.networkEffectPercent = networkEffectPercent;
+    }
+
+
     public AuthenticationResponse(String accessToken, String refreshToken, String tokenType) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
@@ -52,6 +63,15 @@ public class AuthenticationResponse {
 
     public void setTokenType(String tokenType) {
         this.tokenType = tokenType;
+    }
+
+
+    public float getNetworkEffectPercent() {
+        return networkEffectPercent;
+    }
+
+    public void setNetworkEffectPercent(float networkEffectProcent) {
+        this.networkEffectPercent = networkEffectProcent;
     }
 }
 

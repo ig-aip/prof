@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import data.AuthenticationResponse;
+import data.DiagramInfo;
 import data.JwtPair;
 import data.Workers;
 
@@ -13,6 +14,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
@@ -24,6 +26,8 @@ public class ApiService {
     private String url = "http://localhost:8080";
     private Preferences preferences = Preferences.userRoot().node("org.example.auth");
     Workers currentWorker;
+    float networkEffectPercent;
+    DiagramInfo diagramInfo = new DiagramInfo();
 
     ApiService() {
         client = HttpClient.newBuilder().
@@ -51,9 +55,20 @@ public class ApiService {
         AuthenticationResponse tokens = objectMapper.readValue(resp.body(), AuthenticationResponse.class);
         saveTokens(tokens.getJwtPair().getAccessToken(), tokens.getJwtPair().getRefreshToken());
         currentWorker = tokens.getWorker();
+        networkEffectPercent = tokens.getNetworkEffectPercent();
         return tokens;
     }
 
+    public DiagramInfo getDiagramRequset() throws IOException, InterruptedException {
+        HttpRequest req = HttpRequest.newBuilder()
+                .uri(URI.create(url + "/vending/diagram"))
+                .GET()
+                .build();
+
+        HttpResponse<String> resp = client.send(req, HttpResponse.BodyHandlers.ofString());
+        diagramInfo = objectMapper.readValue(resp.body(), DiagramInfo.class);
+        return diagramInfo;
+    }
 
     public String getRole() throws Exception {
         HttpRequest req = HttpRequest.newBuilder()
@@ -68,6 +83,9 @@ public class ApiService {
 
         return  resp.body();
     }
+
+
+    public List<String> get
 
     private void saveTokens(String accessToken, String refreshToken){
         if(accessToken != null){ preferences.put("accessToken", accessToken);}
@@ -160,6 +178,10 @@ public class ApiService {
     public Workers getCurrentWorker() {
         return currentWorker;
     }
+
+    public float getNetworkEffectPercent() { return networkEffectPercent; }
+
+    public DiagramInfo getDiagramInfo(){ return diagramInfo; }
 
     public void clear() throws BackingStoreException {
         this.currentWorker = null;

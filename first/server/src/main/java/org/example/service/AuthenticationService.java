@@ -25,14 +25,17 @@ public class AuthenticationService {
     private  RefreshTokensService refreshTokensService;
     private  PasswordEncoder passwordEncoder;
     private  AuthenticationManager authenticationManager;
+    private  VendingApparatesService vendingApparatesService;
 
-    public AuthenticationService(CustomDetailsWorkerService workerService, JwtService jwtService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, RefreshTokensService refreshTokensService) {
+    public AuthenticationService(CustomDetailsWorkerService workerService, JwtService jwtService, RefreshTokensService refreshTokensService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, VendingApparatesService vendingApparatesService) {
         this.workerService = workerService;
         this.jwtService = jwtService;
+        this.refreshTokensService = refreshTokensService;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
-        this.refreshTokensService = refreshTokensService;
+        this.vendingApparatesService = vendingApparatesService;
     }
+
 
     public AuthenticationResponse signUp(SignUpRequest request){
         String hash_password = passwordEncoder.encode(request.getPassword());
@@ -64,7 +67,8 @@ public class AuthenticationService {
 
         String accessToken = jwtService.generateAccessToken(workerService.findWorkerByEmail(request.getEmail()));
         String refreshToken = refreshTokensService.createRefrshToken(workerService.findWorkerByEmail(request.getEmail()), 1);
-        AuthenticationResponse resp = new AuthenticationResponse(accessToken, refreshToken, "Bearer", worker);
+        AuthenticationResponse resp = new AuthenticationResponse(accessToken, refreshToken, "Bearer", worker, vendingApparatesService.getVendingApparatesNetworkEffectivnessPercent());
+        System.out.printf("PERCENT IN SIGN - IN: " + resp.getNetworkEffectPercent());
 
         return resp;
     }

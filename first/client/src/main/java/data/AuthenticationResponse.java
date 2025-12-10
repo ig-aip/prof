@@ -8,6 +8,7 @@ public class AuthenticationResponse {
     @JsonProperty("worker")
     Workers worker;
     JwtPair jwtPair = new JwtPair("", "", "");
+    float networkEffectPercent;
 
 
     public AuthenticationResponse(){}
@@ -41,5 +42,13 @@ public class AuthenticationResponse {
 
     public String getRefreshToken(){
         return jwtPair.getRefreshToken();
+    }
+
+    public float getNetworkEffectPercent() {
+        return networkEffectPercent;
+    }
+
+    public void setNetworkEffectPercent(float networkEffectyvness) {
+        this.networkEffectPercent = networkEffectyvness;
     }
 }

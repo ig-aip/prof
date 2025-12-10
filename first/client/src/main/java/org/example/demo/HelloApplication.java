@@ -10,12 +10,17 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("client");
-        stage.setScene(scene);
-        stage.setMinWidth(420);
-        stage.setMinHeight(300);
-        stage.show();
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("logIn.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+            stage.setTitle("client");
+            stage.setScene(scene);
+            stage.setMinWidth(420);
+            stage.setMinHeight(300);
+            stage.show();
+        }catch (Exception ex){
+            System.out.println("main exce[tion: " + ex.getMessage());
+        }
+
     }
 }

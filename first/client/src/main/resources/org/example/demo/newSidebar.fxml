@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="sidebarRoot" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.SideBarController"
+      spacing="6" prefWidth="220" styleClass="sidebar">
+    <HBox alignment="CENTER_LEFT" spacing="8" styleClass="sidebar-header" padding="8">
+        <ImageView fitWidth="24" fitHeight="24"/>
+        <Label text="Навигация" style="-fx-text-fill: #fff;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button fx:id="collapseBtn" text="≡" onAction="#onCollapseToggle" styleClass="icon-btn"/>
+    </HBox>
+
+    <ScrollPane fitToWidth="true">
+        <VBox spacing="4" padding="8">
+            <Button fx:id="btnHome" text="Главная" onAction="#initialize" styleClass="sidebar-item"/>
+            <Button fx:id="btnMonitor" text="Монитор ТА" onAction="#initialize" styleClass="sidebar-item"/>
+
+            <!-- Детальные отчеты -->
+            <VBox>
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="Детальные отчеты" styleClass="sidebar-item-label"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="toggleReports" text="▸" onAction="#toggleReports" styleClass="icon-btn"/>
+                </HBox>
+                <VBox fx:id="reportsPane" spacing="4" padding="6" visible="false" managed="false">
+                    <Button text="Отчет 1" onAction="#initialize" styleClass="sidebar-subitem"/>
+                    <Button text="Отчет 2" onAction="#initialize" styleClass="sidebar-subitem"/>
+                </VBox>
+            </VBox>
+
+            <!-- Учет ТМЦ -->
+            <VBox>
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="Учет ТМЦ" styleClass="sidebar-item-label"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="toggleTmc" text="▸" onAction="#toggleTmc" styleClass="icon-btn"/>
+                </HBox>
+                <VBox fx:id="tmcPane" spacing="4" padding="6" visible="false" managed="false">
+                    <Button text="Склад" onAction="#initialize" styleClass="sidebar-subitem"/>
+                    <Button text="Приход/Расход" onAction="#initialize" styleClass="sidebar-subitem"/>
+                </VBox>
+            </VBox>
+
+            <Button fx:id="btnAdmin" text="Администрирование" onAction="#initialize" styleClass="sidebar-item"/>
+        </VBox>
+    </ScrollPane>
+</VBox>

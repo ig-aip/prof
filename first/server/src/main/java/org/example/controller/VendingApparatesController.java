@@ -3,8 +3,11 @@ package org.example.controller;
 
 import jakarta.validation.Valid;
 import org.apache.logging.log4j.Logger;
+import org.example.authentication.DiagramInfo;
+import org.example.db.Sales;
 import org.example.db.VendingApparates;
 import org.example.repositories.VendingApparatesRepo;
+import org.example.service.VendingApparatesService;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +20,11 @@ import java.util.List;
 @RequestMapping("/vending")
 public class VendingApparatesController {
     private final VendingApparatesRepo repo;
+    private VendingApparatesService service;
 
-
-    public VendingApparatesController(VendingApparatesRepo repo) {
+    public VendingApparatesController(VendingApparatesRepo repo, VendingApparatesService service) {
         this.repo = repo;
+        this.service = service;
     }
 
 
@@ -34,10 +38,18 @@ public class VendingApparatesController {
         return ResponseEntity.created(location).body(saved);
     }
 
+    @GetMapping("/diagram")
+    public DiagramInfo getDiagramInfo(){
+        return service.getDiagramInfo();
+    }
+
     @GetMapping
     public List<VendingApparates>  getALL(){
         System.out.println("getAll");
+        System.out.println("PROCENT: " + service.getVendingApparatesNetworkEffectivnessPercent());
         List<VendingApparates> list = repo.findAll();
         return list;
     }
+
+
 }

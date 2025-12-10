@@ -2,6 +2,7 @@ package org.example.db;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
+import org.example.Enums.VendingStatus;
 import org.example.Enums.VendingType;
 
 
@@ -29,6 +30,10 @@ public class VendingApparates {
     @Column(name = "type", nullable = false)
     VendingType type;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    VendingStatus status;
+
     @Column(name = "serialNumber", nullable = false, unique = true, length = 100)
     String serialNumber;
 
@@ -54,7 +59,7 @@ public class VendingApparates {
     @Min(value = 1)
     Integer resourceHours;
 
-    @Column(name = "nextCheckDate")
+    @Column(name = "dateNextCheck")
     LocalDate dateNextCheck;
 
     @Column(name = "dateInvertarization", nullable = false)
@@ -225,4 +230,14 @@ public class VendingApparates {
     public void setLastCheckWorkerId(Long lastCheckWorkerId) {
         this.lastCheckWorkerId = lastCheckWorkerId;
     }
+
+    public VendingStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(VendingStatus status) {
+        this.status = status;
+    }
+
+
 }
