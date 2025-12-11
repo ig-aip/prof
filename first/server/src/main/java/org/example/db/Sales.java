@@ -5,6 +5,7 @@ import org.example.Enums.PayMethod;
 
 import java.math.BigDecimal;
 import java.time.Clock;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 @Entity
@@ -25,14 +26,14 @@ public class Sales {
     private int productsSaleCount;
 
     @Column(name = "price", nullable = false, scale = 2)
-    private BigDecimal price;
+    private int price;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "payMethod")
     private PayMethod payMethod;
 
     @Column(name = "soldAt")
-    private OffsetDateTime soldAt;
+    private LocalDateTime soldAt;
 
 
     public Long getId() {
@@ -67,11 +68,11 @@ public class Sales {
         this.productsSaleCount = productsSaleCount;
     }
 
-    public BigDecimal getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -83,11 +84,11 @@ public class Sales {
         this.payMethod = payMethod;
     }
 
-    public OffsetDateTime getSoldAt() {
+    public LocalDateTime getSoldAt() {
         return soldAt;
     }
 
-    public void setSoldAt(OffsetDateTime soldAt) {
+    public void setSoldAt(LocalDateTime soldAt) {
         this.soldAt = soldAt;
     }
 }

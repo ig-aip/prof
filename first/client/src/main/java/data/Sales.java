@@ -9,6 +9,7 @@ import enams.PayMethod;
 
 import java.math.BigDecimal;
 import java.time.Clock;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 
@@ -17,18 +18,17 @@ public class Sales {
     Long id;
 
 
-
     private int vendingApparatId;
 
     private int productId;
 
     private int productsSaleCount;
 
-    private BigDecimal price;
+    private int price;
 
     private PayMethod payMethod;
 
-    private OffsetDateTime soldAt;
+    private LocalDateTime soldAt;
 
 
     public Long getId() {
@@ -63,11 +63,11 @@ public class Sales {
         this.productsSaleCount = productsSaleCount;
     }
 
-    public BigDecimal getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -79,11 +79,11 @@ public class Sales {
         this.payMethod = payMethod;
     }
 
-    public OffsetDateTime getSoldAt() {
+    public LocalDateTime getSoldAt() {
         return soldAt;
     }
 
-    public void setSoldAt(OffsetDateTime soldAt) {
+    public void setSoldAt(LocalDateTime soldAt) {
         this.soldAt = soldAt;
     }
 }

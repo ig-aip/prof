@@ -1,12 +1,13 @@
 package app.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.prefs.BackingStoreException;
 
-import data.DiagramInfo;
-import data.Workers;
+import data.*;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -20,7 +21,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.PieChart;
+import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -35,11 +36,19 @@ import org.example.demo.ApiService;
 public class MainController {
 
     ApiService apiService = ApiService.getSINGLTON();
+    ListDaysOfSale daysOfSale = new ListDaysOfSale(10);
 
     @FXML
     private ProgressIndicator networkEffectPercent;
 
+    @FXML
+    private BarChart<String, Number> salesDiagram;
 
+    @FXML
+    private CategoryAxis xAxis;
+
+    @FXML
+    private NumberAxis yAxis;
 
     @FXML
     private ResourceBundle resources;
@@ -73,6 +82,10 @@ public class MainController {
     @FXML
     private Label networkEffectPercentLabel;
 
+
+    @FXML
+    private VBox newsList;
+
     Timeline timeline;
 
     private PieChart.Data closed;
@@ -85,34 +98,38 @@ public class MainController {
         timeline.play();
     }
 
-    private void pieChartSetter(){
-        pieChart.setAnimated(false);
+    private void pieChartSetDynamicUI(){
         String closed = "#DC143C";
         String working = "#7FFF00";
         String remont = "#00008B";
 
         String [] colors = {closed, working, remont};
+        int i = 0;
+        for(PieChart.Data data : pieChart.getData()){
 
+            data.getNode().setStyle("-fx-pie-color: " + colors[i] + ";");
+            ++i;
+            int value = (int) data.getPieValue();
+            String text = String.valueOf(value);
+            Tooltip tooltip = new Tooltip(text);
+            Tooltip.install(data.getNode(), tooltip);
+
+            data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                String msg = String.format("%s: %d", data.getName(), value);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, msg);
+                alert.show();
+            });
+
+
+        }
+
+    }
+
+    private void pieChartSetter(){
+        pieChart.setAnimated(false);
 
         Platform.runLater(() ->{
-            int i = 0;
-            for(PieChart.Data data : pieChart.getData()){
-
-                data.getNode().setStyle("-fx-pie-color: " + colors[i] + ";");
-                ++i;
-
-                int value = (int) data.getPieValue();
-                String text = String.valueOf(value);
-                Tooltip tooltip = new Tooltip(text);
-                Tooltip.install(data.getNode(), tooltip);
-
-                data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                    String msg = String.format("%s: %d", data.getName(), value);
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION, msg);
-                    alert.show();
-                });
-
-            }
+            pieChartSetDynamicUI();
         });
 
     }
@@ -139,6 +156,7 @@ public class MainController {
                 closed.setPieValue(info.getClosed());
                 working.setPieValue(info.getWorking());
                 remont.setPieValue(info.getTech_remont());
+                pieChartSetDynamicUI();
             }
 
 
@@ -154,6 +172,7 @@ public class MainController {
     }
 
     private void init() throws IOException, InterruptedException {
+
         startAutoUpdate();
 
 
@@ -163,27 +182,29 @@ public class MainController {
         SideBarController sideBarController = loader.getController();
         sideBarController.initialize();
 
-        DiagramInfo info = apiService.getDiagramRequset();
 
 
 
         networkEffectPercentLabel.setText(String.valueOf(String.format("%.2f%%", apiService.getNetworkEffectPercent())));
         networkEffectPercent.setProgress(apiService.getNetworkEffectPercent() / 100);
-        networkEffectPercent.setAccessibleText("10");
         networkEffectPercentLabel.backgroundProperty().set(Background.fill(Paint.valueOf("white")));
-        System.out.println("PERCENT: " + apiService.getNetworkEffectPercent());
-        System.out.println("PERCENT: " + networkEffectPercent.getProgress());
         root.setLeft(sideBar);
         root.getLeft().maxWidth(10);
+
+        //диаграмма
+        daysOfSale.setArray(apiService.getLastSalesForDays(daysOfSale.getDaysAgo()));
+        showMoneyChart();
+
     }
 
 
-    public void setWorker() throws IOException, InterruptedException {
-        init();
+    public void setWorker() throws IOException, InterruptedException, BackingStoreException {
+
         Workers worker = apiService.getCurrentWorker();
         StringBuilder sBuilder = new StringBuilder();
         menuDropDOwn.setText(worker.getSecondName() + " " + String.valueOf(worker.getFirstName().charAt(0)).toUpperCase() + "." + String.valueOf(worker.getThirdName().charAt(0)).toUpperCase() + "." );
         roleLabel.setText(worker.getRole().getString());
+        init();
     }
 
     @FXML
@@ -209,7 +230,6 @@ public class MainController {
     void openProfile(ActionEvent event) throws IOException {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/profile.fxml"));
-            //loader.setRoot(loader);
             Parent profile = loader.load();
 
 
@@ -225,6 +245,46 @@ public class MainController {
 
 
 
+    }
+
+    @FXML
+    public void showMoneyChart(){
+        salesDiagram.getData().clear();
+        xAxis.setLabel("Дни");
+        yAxis.setLabel("Сумма продаж");
+
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("День / Сумма");
+
+        for(DayOfSale day : daysOfSale.getDayOfSaleList()){
+            String label = String.valueOf(day.getTime().getMonthValue()) + "."+ String.valueOf(day.getTime().getDayOfMonth());
+            int sum = day.getAllMoneyForThisDay();
+
+            series.getData().add(new XYChart.Data<>(label, sum));
+        }
+        System.out.println("DATS MONEY: " + daysOfSale.getDayOfSaleList().size());
+
+        salesDiagram.getData().add(series);
+    }
+
+    @FXML
+    public void showCountChart(){
+        salesDiagram.getData().clear();
+        xAxis.setLabel("Дни");
+        yAxis.setLabel("Количество продаж");
+
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("День / Количество проданных товаров");
+
+        for(DayOfSale day : daysOfSale.getDayOfSaleList()){
+            String label = String.valueOf(day.getTime().getMonthValue()) + "."+ String.valueOf(day.getTime().getDayOfMonth());
+            Long count = day.getAllSaledCount();
+
+            series.getData().add(new XYChart.Data<>(label, count));
+        }
+
+        System.out.println("DATS COUNT: " + daysOfSale.getDayOfSaleList().size());
+        salesDiagram.getData().add(series);
     }
 
     @FXML

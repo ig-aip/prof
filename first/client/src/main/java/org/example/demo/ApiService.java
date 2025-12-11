@@ -3,10 +3,9 @@ package org.example.demo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import data.AuthenticationResponse;
-import data.DiagramInfo;
-import data.JwtPair;
-import data.Workers;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import data.*;
 
 import java.io.IOException;
 import java.net.URI;
@@ -22,7 +21,9 @@ import java.util.prefs.Preferences;
 public class ApiService {
     private static final ApiService SINGLTON = new ApiService();
     private HttpClient client;
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule())
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+    ;
     private String url = "http://localhost:8080";
     private Preferences preferences = Preferences.userRoot().node("org.example.auth");
     Workers currentWorker;
@@ -85,11 +86,31 @@ public class ApiService {
     }
 
 
-    public List<String> get
+    public List<Sales> getLastSalesForDays(int days) throws IOException, InterruptedException {
+        HttpRequest req = HttpRequest.newBuilder()
+                .uri(URI.create(url + "/Sales/Last/" + days))
+                .GET()
+                .build();
+        
+        HttpResponse<String> resp = authenticationRequest(req);
+        System.out.println(resp.body());
+        if(resp.statusCode() != 200){
+            System.out.println("ERROR : " + resp.statusCode());
+            System.out.println(resp.body());
+        }
+        List<Sales> list = objectMapper.readValue(resp.body(), new TypeReference<List<Sales>>() {});
+        return list;
+    }
 
-    private void saveTokens(String accessToken, String refreshToken){
+    public void clearTokens() throws BackingStoreException {
+        preferences.clear();
+        System.out.println("CLEAR");
+    }
+
+    private void saveTokens(String accessToken, String refreshToken)  {
+
         if(accessToken != null){ preferences.put("accessToken", accessToken);}
-        if(refreshToken != null){ preferences.put("refreshToken", accessToken); }
+        if(refreshToken != null){ preferences.put("refreshToken", refreshToken); }
     }
 
     private HttpResponse<String> authenticationRequest(HttpRequest original) throws IOException, InterruptedException {

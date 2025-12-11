@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="root" prefHeight="479.0" prefWidth="771.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.MainController">
+<BorderPane fx:id="root" prefHeight="479.0" prefWidth="933.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.MainController">
     <left>
         <VBox prefHeight="317.0" prefWidth="185.0" spacing="12.0" style="-fx-background-color: #2f3d4a; -fx-padding: 12;" BorderPane.alignment="CENTER">
             <padding>
@@ -57,10 +57,10 @@
         </HBox>
     </top>
     <center>
-        <GridPane prefHeight="337.0" prefWidth="586.0" BorderPane.alignment="CENTER">
+        <GridPane prefHeight="417.0" prefWidth="642.0" BorderPane.alignment="CENTER">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="429.0" minWidth="10.0" prefWidth="429.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="395.0" minWidth="0.0" prefWidth="0.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="549.0" minWidth="10.0" prefWidth="540.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="395.0" minWidth="0.0" prefWidth="208.0" />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -104,12 +104,12 @@
                         </HBox>
                   <HBox prefHeight="44.0" prefWidth="429.0">
                      <children>
-                        <Button mnemonicParsing="false" text="По сумме">
+                        <Button mnemonicParsing="false" onAction="#showMoneyChart" text="По сумме">
                            <HBox.margin>
                               <Insets left="10.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="108.0" text="По количеству">
+                        <Button mnemonicParsing="false" onAction="#showCountChart" prefHeight="25.0" prefWidth="108.0" text="По количеству">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
@@ -121,12 +121,12 @@
                   </HBox>
                         <HBox prefHeight="205.0" prefWidth="454.0">
                             <children>
-                                <BarChart prefHeight="172.0" prefWidth="429.0">
+                                <BarChart fx:id="salesDiagram" prefHeight="190.0" prefWidth="589.0">
                                     <xAxis>
-                                        <CategoryAxis side="BOTTOM" />
+                                        <CategoryAxis fx:id="xAxis" />
                                     </xAxis>
                                     <yAxis>
-                                        <NumberAxis side="LEFT" />
+                                        <NumberAxis fx:id="yAxis" side="LEFT" />
                                     </yAxis>
                                 </BarChart>
                             </children>

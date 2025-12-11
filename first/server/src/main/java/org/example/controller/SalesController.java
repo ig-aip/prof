@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.example.db.Sales;
 import org.example.service.SalesService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,11 +24,13 @@ public class SalesController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_FRANCHAISER')")
     public List<Sales> findAll(){
         return salesService.getAll();
     }
 
     @GetMapping("/Last/{days}")
+    @PreAuthorize("hasRole('ROLE_FRANCHAISER')")
     public List<Sales> findLastDays(@PathVariable Long days){
         return salesService.findAllSalesLastDays(days);
     }

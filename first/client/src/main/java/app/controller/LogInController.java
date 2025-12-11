@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import org.example.demo.ApiService;
 import org.example.demo.MainController;
 
+import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
 public class LogInController {
@@ -37,7 +38,7 @@ public class LogInController {
     }
 
     @FXML
-    private void onSignIn(ActionEvent event){
+    private void onSignIn(ActionEvent event) throws IOException, InterruptedException {
         String email = emailField.getText().trim();
         String password = passwordField.getText();
         if(email.isEmpty() || password.isEmpty()){
