@@ -26,6 +26,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -37,6 +38,7 @@ public class MainController {
 
     ApiService apiService = ApiService.getSINGLTON();
     ListDaysOfSale daysOfSale = new ListDaysOfSale(10);
+
 
     @FXML
     private ProgressIndicator networkEffectPercent;
@@ -165,7 +167,6 @@ public class MainController {
             //pieChart.setLabelsVisible(true);
 
             //pieChart.getData().addAll(new PieChart.Data("closed\n" + info.getClosed(), info.getClosed()), new PieChart.Data("working\n" + info.getWorking(), info.getWorking()), new PieChart.Data("remont\n"  +info.getTech_remont(), info.getTech_remont()));
-            System.out.println("yappi");
         });
 
         new Thread(task).start();
@@ -173,27 +174,33 @@ public class MainController {
 
     private void init() throws IOException, InterruptedException {
 
-        startAutoUpdate();
+        try {
+            newsSet();
+            startAutoUpdate();
 
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/sideBar.fxml"));
-        Parent sideBar = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/sideBar.fxml"));
+            Parent sideBar = loader.load();
 
-        SideBarController sideBarController = loader.getController();
-        sideBarController.initialize();
-
-
+            SideBarController sideBarController = loader.getController();
+            sideBarController.initialize();
 
 
-        networkEffectPercentLabel.setText(String.valueOf(String.format("%.2f%%", apiService.getNetworkEffectPercent())));
-        networkEffectPercent.setProgress(apiService.getNetworkEffectPercent() / 100);
-        networkEffectPercentLabel.backgroundProperty().set(Background.fill(Paint.valueOf("white")));
-        root.setLeft(sideBar);
-        root.getLeft().maxWidth(10);
 
-        //диаграмма
-        daysOfSale.setArray(apiService.getLastSalesForDays(daysOfSale.getDaysAgo()));
-        showMoneyChart();
+
+            networkEffectPercentLabel.setText(String.valueOf(String.format("%.2f%%", apiService.getNetworkEffectPercent())));
+            networkEffectPercent.setProgress(apiService.getNetworkEffectPercent() / 100);
+            networkEffectPercentLabel.backgroundProperty().set(Background.fill(Paint.valueOf("white")));
+            root.setLeft(sideBar);
+            root.getLeft().maxWidth(10);
+
+            //диаграмма
+            daysOfSale.setArray(apiService.getLastSalesForDays(daysOfSale.getDaysAgo()));
+            showMoneyChart();
+        } catch (Exception e) {
+            System.out.println("init Exception: " + e.getMessage());
+        }
+
 
     }
 
@@ -285,6 +292,29 @@ public class MainController {
 
         System.out.println("DATS COUNT: " + daysOfSale.getDayOfSaleList().size());
         salesDiagram.getData().add(series);
+    }
+
+    public void newsSet() throws IOException, InterruptedException {
+        try{
+            List<News> list = apiService.getAllNews();
+            newsList.getChildren().clear();
+
+            for(News news : list){
+                HBox newsItem = new HBox(10);
+
+                Label dateLabel = new Label(news.getDate().getYear() + "." + news.getDate().getMonthValue() + "." + news.getDate().getDayOfMonth());
+                Label newsTitle = new Label(news.getName());
+
+                dateLabel.setMinWidth(60);
+                newsTitle.setWrapText(true);
+
+                newsItem.getChildren().addAll(dateLabel, newsTitle);
+                newsList.getChildren().add(newsItem);
+            }
+        }catch (Exception ex){
+            System.out.println("Exception in News: " + ex.getMessage());
+        }
+
     }
 
     @FXML

@@ -68,6 +68,9 @@ public class LogInController {
 
                         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                         stage.setScene(new Scene(root));
+                        stage.setMinWidth(1000);
+                        stage.setMinHeight(510);
+                        stage.setResizable(false);
                         stage.show();
 
                         String accessToke = result.getJwtPair().getAccessToken();

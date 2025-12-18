@@ -2,6 +2,7 @@ package org.example.controller;
 
 import org.example.db.News;
 import org.example.service.NewsService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,6 +12,9 @@ import java.util.List;
 public class NewsController {
     NewsService newsService;
 
+    public NewsController(NewsService newsService) {
+        this.newsService = newsService;
+    }
 
     @PostMapping
     public News create(@RequestBody News news){
@@ -18,6 +22,7 @@ public class NewsController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_FRANCHAISER')")
     public List<News> getAll(){
         return newsService.findAll();
     }

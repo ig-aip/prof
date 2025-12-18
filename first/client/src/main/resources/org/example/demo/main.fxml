@@ -7,10 +7,10 @@
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="root" prefHeight="479.0" prefWidth="933.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.MainController">
+<BorderPane fx:id="root" prefHeight="507.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.MainController">
     <left>
         <VBox prefHeight="317.0" prefWidth="185.0" spacing="12.0" style="-fx-background-color: #2f3d4a; -fx-padding: 12;" BorderPane.alignment="CENTER">
             <padding>
@@ -133,25 +133,29 @@
                         </HBox>
                     </children>
                 </VBox>
-                <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                <VBox prefHeight="445.0" prefWidth="249.0" GridPane.columnIndex="1">
                     <children>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                             <children>
-                                <TitledPane animated="false" text="untitled">
+                                <TitledPane animated="false" prefHeight="115.0" prefWidth="221.0" text="untitled">
                                     <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="219.0" />
                                     </content>
                                 </TitledPane>
                             </children>
                         </HBox>
                         <HBox prefHeight="162.0" prefWidth="157.0">
                             <children>
-                                <TitledPane animated="false" text="untitled">
+                                <TitledPane animated="false" prefHeight="162.0" prefWidth="219.0" text="untitled">
                                     <content>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                            <children>
-                                                <ListView layoutX="-3.0" layoutY="-27.0" prefHeight="200.0" prefWidth="200.0" />
-                                            </children>
+                                 <children>
+                                    <ScrollPane prefHeight="200.0" prefWidth="217.0">
+                                       <content>
+                                          <VBox fx:id="newsList" prefHeight="200.0" prefWidth="212.0" />
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
                                         </AnchorPane>
                                     </content>
                                 </TitledPane>

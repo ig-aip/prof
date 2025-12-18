@@ -209,5 +209,16 @@ public class ApiService {
         preferences.clear();
     }
 
+    public List<News> getAllNews() throws IOException, InterruptedException {
+        HttpRequest req = HttpRequest.newBuilder().
+                uri(URI.create(url + "/News"))
+                .GET()
+                .build();
+
+        HttpResponse<String> resp = authenticationRequest(req);
+        return objectMapper.readValue(resp.body(), new TypeReference<List<News>>(){});
+
+    }
+
 }
 
